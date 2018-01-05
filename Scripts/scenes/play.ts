@@ -40,8 +40,8 @@ module scenes {
         private rightWindowHealthOutline:objects.Label;
 
         // Player's Labels
-        private playerHealth:objects.Label;
-        private playerHealthOutline:objects.Label;
+        //private playerHealth:objects.Label;
+        //private playerHealthOutline:objects.Label;
 
         // Collision
         private collision: managers.Collision;
@@ -64,6 +64,9 @@ module scenes {
 
         private bgMap: objects.Bgmap;
 
+        private healthbarOutline:createjs.Shape;
+        private healthbar:createjs.Shape;
+        private maxHealthbar:createjs.Shape;
         // PUBLIC PROPETIES
 
         // CONSTRUCTORS
@@ -159,8 +162,8 @@ module scenes {
             this.keyboardInput = new managers.keyBoardInput();
 
             // Player's Health Label
-            this.playerHealth = new objects.Label("Health: " +this.player.playerHealth, "20px","Verdana", "#000000", 20, 640, false);    
-            this.playerHealthOutline = new objects.Label("Health: " +this.player.playerHealth, "20px","Verdana", "#FFFFFF", 20, 640, false);
+            //this.playerHealth = new objects.Label("Health: " +this.player.playerHealth, "20px","Verdana", "#000000", 20, 640, false);    
+            //this.playerHealthOutline = new objects.Label("Health: " +this.player.playerHealth, "20px","Verdana", "#FFFFFF", 20, 640, false);
             
             // Bullet Label
             this.bulletLabel = new objects.Label("Bullets: " +(this.bulletNum - this.bulletCounter), "20px","Verdana", "#000000", 20, 660, false);   
@@ -172,14 +175,14 @@ module scenes {
             this.reloadBulletLabelOutline.outline = 1;
 
             // Set Label outlines to True
-            this.playerHealthOutline.outline = 1;
+            //this.playerHealthOutline.outline = 1;
             this.bulletLabelOutline.outline = 1; 
 
             // Add Labels onto Scene
             this.addChild(this.bulletLabel);
             this.addChild(this.bulletLabelOutline);
-            this.addChild(this.playerHealth);
-            this.addChild(this.playerHealthOutline);
+            //this.addChild(this.playerHealth);
+            //this.addChild(this.playerHealthOutline);
 
 
             //Add Mouse Listener
@@ -189,6 +192,16 @@ module scenes {
                 // Bullet is Fired, Activate Method BulletFire()
                 this.bulletFire();
             });
+
+
+            this.healthbar = new createjs.Shape();
+            this.maxHealthbar = new createjs.Shape();
+            this.healthbarOutline = new createjs.Shape();
+            this.healthbarOutline.graphics.clear().beginFill("#FFFFFF").drawRect(19,639,101.5*1.5,22);
+            this.maxHealthbar.graphics.clear().beginFill("#000000").drawRect(20,640,100*1.5,20);
+            this.addChild(this.healthbarOutline);
+            this.addChild(this.healthbar);
+            this.addChild(this.maxHealthbar);                        
         }
 
         public Update():number
@@ -265,6 +278,7 @@ module scenes {
                 // Reload Method
                 this.reloadBullet();
             }
+            this.updateHealthBar();
             return this.currentScene;
         }
 
@@ -337,13 +351,18 @@ module scenes {
         }
         private updateLabels()
         {
-            this.playerHealth.text = "Health: "+ this.player.playerHealth;
-            this.playerHealthOutline.text = "Health: "+ this.player.playerHealth;
+            //this.playerHealth.text = "Health: "+ this.player.playerHealth;
+            //this.playerHealthOutline.text = "Health: "+ this.player.playerHealth;
             this.bulletLabel.text = "Bullets: "+ (this.bulletNum - this.bulletCounter);
             this.bulletLabelOutline.text = "Bullets: "+ (this.bulletNum - this.bulletCounter);
             this.leftWindowHealth.text = "" +(this.leftWindow.windowLeftHealth) + "/100";
             this.rightWindowHealth.text = "" +(this.rightWindow.windowRightHealth)+"/100";
         }
         
+        private updateHealthBar()
+        {
+            this.healthbar.graphics.clear().beginFill("DarkRed").drawRect(20,640,(this.player.playerHealth/10)*15,20);
+            this.addChild(this.healthbar);
+        }
     }
 }
