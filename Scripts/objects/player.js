@@ -13,37 +13,38 @@ var objects;
     var Player = /** @class */ (function (_super) {
         __extends(Player, _super);
         //CONSTRUCTORS
-        function Player(assetManager) {
-            var _this = _super.call(this, assetManager, "player") || this;
-            //PRIVATE INSTANCE VARIBALES 
-            //Game
-            _this.keyBoardKey = new core.keyBoardInput();
+        function Player() {
+            var _this = _super.call(this, "player") || this;
+            _this.keyBoardKey = new managers.keyBoardInput();
             _this.Start();
             return _this;
         }
         //PUBLIC PROPERTIES
-        Player.prototype.getHealth = function () {
-            return this.health;
-        };
-        Player.prototype.setHealth = function (newHealth) {
-            this.health = newHealth;
-        };
-        Player.prototype.getPlayerXY = function () {
+        Player.prototype.getPlayerX = function () {
             return this.x;
+        };
+        Player.prototype.getPlayerY = function () {
+            return this.y;
+        };
+        Player.prototype.getPayerRotation = function () {
+            return this.playerRotation;
         };
         //PUBLIC METHODS             
         Player.prototype.Start = function () {
+            this.regXY();
+            this.y = 400;
             this.x = 400;
-            this.y = 300;
-            this.health = 100;
-            this.keyBoardKey = new core.keyBoardInput();
+            this.playerHealth = 50;
+            this.keyBoardKey = new managers.keyBoardInput();
+            this.bulletSpawn = new createjs.Point(this.y - 35, this.x);
         };
         Player.prototype.Update = function () {
-            this.position.x = this.x;
-            this.position.y = this.y;
+            this.bulletSpawn.x = this.x;
+            this.bulletSpawn.y = this.y;
             this.checkBounds();
             this.playerMovement();
         };
+        Player.prototype.Reset = function () { };
         //PRIVATE METHODS
         Player.prototype.regXY = function () {
             this.width = this.getBounds().width;
@@ -54,17 +55,17 @@ var objects;
             this.regY = this.halfHeight;
         };
         Player.prototype.checkBounds = function () {
-            if (this.x >= 850 - this.halfWidth) {
-                this.x = 850 - this.halfWidth;
+            if (this.x >= config.Screen.WIDTH - this.halfWidth) {
+                this.x = config.Screen.WIDTH - this.halfWidth;
             }
             if (this.x <= this.halfWidth) {
                 this.x = this.halfWidth;
             }
-            if (this.y >= 600 - this.halfWidth) {
-                this.y = 600 - this.halfWidth;
+            if (this.y >= config.Screen.HEIGHT - this.halfHeight) {
+                this.y = config.Screen.HEIGHT - this.halfHeight;
             }
-            if (this.y <= this.halfWidth) {
-                this.y = this.halfWidth;
+            if (this.y <= this.halfHeight) {
+                this.y = this.halfHeight;
             }
         };
         Player.prototype.playerMovement = function () {
@@ -86,8 +87,9 @@ var objects;
         Player.prototype.setPlayerRotation = function () {
             var xAngle = this.stage.mouseX - this.x;
             var yAngle = this.stage.mouseY - this.y;
-            this.playerAngle = Math.atan2(yAngle, xAngle) * (180 / Math.PI);
-            this.rotation = this.playerAngle;
+            this.playerRotation = Math.atan2(yAngle, xAngle) * (180 / Math.PI);
+            this.rotation = this.playerRotation;
+            //console.log("Player Rotation: " +this.playerRotation);
         };
         return Player;
     }(objects.GameObject));

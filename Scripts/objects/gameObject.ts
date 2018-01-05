@@ -12,38 +12,41 @@ module objects {
         public horizontalSpeed:number;
         public regX :number;
         public regY : number;
-               
-        //Controls
-        public static moveLeft: boolean;
-        public static moveUp: any;
-        public static moveRight: any;
-        public static moveDown: any;
-        
+                     
         //Player
         public playerSpeed: number = 2;
-        public friction: number = 0.98;
-        public velocityX: number= 0;
-        public velocityY: number= 0;
-        public playerRoataion: number = 0;
-        public playerAngle: any;
+        public playerRotation: number;
+        public playerHealth: number;
         public isAlive: boolean;
 
+        //Bullet
+        public bulletSpeed: number= 2;
+        public bulletSpawn: createjs.Point;
+        public bulletCollided: boolean;
+
         //Zombie
-        public zombieSpeed: number = 0.05;
+        public zombieSpeed: number;
+        public zombieHealth: number;
+        public windowReached: boolean;
+
+        //Window
+        public windowRightHealth: number;
+        public windowLeftHealth: number;
+        public isBroken: boolean;
 
         //Game
-        public health: number;
         public position: createjs.Point;
         public isColliding: boolean;
 
+    
         //CONSTRUCTORS
-        constructor(assetManager: createjs.LoadQueue, imageString: string) 
+        constructor(imageString: string) 
         {
-            super(assetManager.getResult(imageString));
+            super(objects.Game.assetManager.getResult(imageString));
             this.name = imageString;
-            this.initialize();
+            this.initialize();         
         }
-
+        
         //PUBLIC METHODS
         private initialize()
         {
@@ -51,14 +54,22 @@ module objects {
             this.height = this.getBounds().height;
             this.halfWidth = this.width /2;
             this.halfHeight = this.height /2;
-            this.regX = this.halfWidth;
-            this.regY = this.halfHeight;
+            //this.regX =this.width;
+            //this.regY = this.height;
             this.position = new createjs.Point(this.x, this.y);
             this.isColliding = false;
+            this.bulletCollided =false;
         }
         public abstract Start(): void //Start method runs when object is instantiated
 
         public abstract Update(): void //Update method runs 60fps
+
+        public abstract Reset(): void 
+
+        public Destroy(): void 
+        {
+            this.parent.removeChild(this);
+        }
         
         //PRIVATE METHODS
     }

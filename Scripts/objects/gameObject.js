@@ -13,16 +13,12 @@ var objects;
     var GameObject = /** @class */ (function (_super) {
         __extends(GameObject, _super);
         //CONSTRUCTORS
-        function GameObject(assetManager, imageString) {
-            var _this = _super.call(this, assetManager.getResult(imageString)) || this;
+        function GameObject(imageString) {
+            var _this = _super.call(this, objects.Game.assetManager.getResult(imageString)) || this;
             //Player
             _this.playerSpeed = 2;
-            _this.friction = 0.98;
-            _this.velocityX = 0;
-            _this.velocityY = 0;
-            _this.playerRoataion = 0;
-            //Zombie
-            _this.zombieSpeed = 0.05;
+            //Bullet
+            _this.bulletSpeed = 2;
             _this.name = imageString;
             _this.initialize();
             return _this;
@@ -33,10 +29,14 @@ var objects;
             this.height = this.getBounds().height;
             this.halfWidth = this.width / 2;
             this.halfHeight = this.height / 2;
-            this.regX = this.halfWidth;
-            this.regY = this.halfHeight;
+            //this.regX =this.width;
+            //this.regY = this.height;
             this.position = new createjs.Point(this.x, this.y);
             this.isColliding = false;
+            this.bulletCollided = false;
+        };
+        GameObject.prototype.Destroy = function () {
+            this.parent.removeChild(this);
         };
         return GameObject;
     }(createjs.Bitmap));
