@@ -93,20 +93,21 @@ var scenes;
             //this.playerHealth = new objects.Label("Health: " +this.player.playerHealth, "20px","Verdana", "#000000", 20, 640, false);    
             //this.playerHealthOutline = new objects.Label("Health: " +this.player.playerHealth, "20px","Verdana", "#FFFFFF", 20, 640, false);
             // Bullet Label
-            this.bulletLabel = new objects.Label("Bullets: " + (this.bulletNum - this.bulletCounter), "20px", "Verdana", "#000000", 20, 660, false);
-            this.bulletLabelOutline = new objects.Label("Bullets: " + (this.bulletNum - this.bulletCounter), "20px", "Verdana", "#FFFFFF", 20, 660, false);
+            this.killCountLabel = new objects.Label("Kills: " + this.collision.killCount, "20px", "Verdana", "#ffffff", 850, 25, false);
+            this.bulletLabel = new objects.Label("Bullets: " + (this.bulletNum - this.bulletCounter), "20px", "Verdana", "#ffffff", 20, 25, false);
             // Reload Labels
             this.reloadBulletLabel = new objects.Label("Press CTRL to Reload", "20px", "Verdana", "#ffffff", (config.Screen.WIDTH / 5) * 2.2, (config.Screen.HEIGHT / 4) * 3, false);
             // Fixing Window Labels
-            this.buildLabel = new objects.Label("Press R or 0 to Fix Window", "20px", "Verdana", "#ffffff", (config.Screen.WIDTH / 5) * 1.8, (config.Screen.HEIGHT / 4) * 3, false);
+            this.buildLabel = new objects.Label("Press R or 0 to Fsix Window", "20px", "Verdana", "#ffffff", (config.Screen.WIDTH / 5) * 1.8, (config.Screen.HEIGHT / 4) * 3, false);
             //this.fixWindowLabelOutline = new objects.Label("Press NUM PAD ZERO to Fix Windows", "20px","Verdana", "#FFFFFF", (config.Screen.WIDTH/5)*1.8, (config.Screen.HEIGHT/4)*3, false);
             // Set Label outlines to True
             //this.playerHealthOutline.outline = 1;
-            this.bulletLabelOutline.outline = 1;
+            //this.bulletLabelOutline.outline = 1; 
             //this.fixWindowLabelOutline.outline = 1;
             //this.reloadBulletLabelOutline.outline = 1;
             // Add Labels onto Scene
             this.addChild(this.bulletLabel);
+            this.addChild(this.killCountLabel);
             this.addChild(this.bulletLabelOutline);
             //Add Mouse Listener
             this.mouse = new managers.Mouse(this.player, this.gameCanvas);
@@ -248,23 +249,28 @@ var scenes;
         };
         // Update Current Labels on Screen
         Play.prototype.updateLabels = function () {
-            this.bulletLabel.text = "Bullets: " + (this.bulletNum - this.bulletCounter) + "/20";
-            this.bulletLabelOutline.text = "Bullets: " + (this.bulletNum - this.bulletCounter) + "/20"; // Add Outline
+            // this.bulletLabel.text = "Bullets: "+ (this.bulletNum - this.bulletCounter)+"/20";
+            //this.bulletLabelOutline.text = "Bullets: "+ (this.bulletNum - this.bulletCounter)+"/20";        // Add Outline
             //this.playerHealth.text = "Health: "+ this.player.playerHealth;
             //this.playerHealthOutline.text = "Health: "+ this.player.playerHealth;
+            this.bulletLabel.text = "Bullets: " + (this.bulletNum - this.bulletCounter) + "/20";
+            this.killCountLabel.text = "Kills:  " + this.collision.killCount;
+            //this.bulletLabelOutline.text = "Bullets: "+ (this.bulletNum - this.bulletCounter)+"/20";
+            //this.leftWindowHealth.text = "" +(this.leftWindow.windowLeftHealth) + "/100";
+            //this.rightWindowHealth.text = "" +(this.rightWindow.windowRightHealth)+"/100";
             //this.leftWindowHealth.text = "" +(this.leftWindow.windowLeftHealth) + "/1000";
             //this.rightWindowHealth.text = "" +(this.rightWindow.windowRightHealth)+"/1000";
         };
         // Updates the Health Bar
         Play.prototype.updateHealthBar = function () {
             if (this.player.playerHealth >= 75) {
-                this.healthbar.graphics.clear().beginFill("#06d600").drawRect(0, 0, (this.player.playerHealth) * 10, 20);
+                this.healthbar.graphics.clear().beginFill("#06d600").drawRect(0, 0, (this.player.playerHealth) * 10, 10);
             }
             else if (this.player.playerHealth >= 45) {
-                this.healthbar.graphics.clear().beginFill("#ea7100").drawRect(0, 0, (this.player.playerHealth) * 10, 20);
+                this.healthbar.graphics.clear().beginFill("#ea7100").drawRect(0, 0, (this.player.playerHealth) * 10, 10);
             }
             else if (this.player.playerHealth <= 45) {
-                this.healthbar.graphics.clear().beginFill("#ea0000").drawRect(0, 0, (this.player.playerHealth) * 10, 20);
+                this.healthbar.graphics.clear().beginFill("#ea0000").drawRect(0, 0, (this.player.playerHealth) * 10, 10);
             }
             this.addChild(this.healthbar);
         };
