@@ -96,6 +96,7 @@ var managers;
                     //Check if objects are currently colliding, default = false
                     if (!object1.isColliding) {
                         //Decrease player health
+                        //createjs.Sound.play("zombieHit",0,0,0,0,0.5,0);
                         object1.playerHealth -= 0.5;
                         //Check if player health is 0, then remove child and change scene
                         if (object1.playerHealth <= 0) {
@@ -145,7 +146,7 @@ var managers;
                     object2.buildWindow = true;
                     //Check if objects are currently colliding, default = false
                     if (!object1.isColliding && object2.isBroken) {
-                        if (getKey == config.Key.R || getKey == config.Key.NUM_PAD_0 && object2.windowRightHealth < 1000) {
+                        if ((getKey == config.Key.R || getKey == config.Key.NUM_PAD_0) && object2.windowRightHealth < 1000) {
                             object2.windowRightHealth += 50;
                             if (object2.windowRightHealth >= 1000) {
                                 object2.visible = true;
