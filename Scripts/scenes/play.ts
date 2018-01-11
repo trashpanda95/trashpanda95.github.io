@@ -64,6 +64,7 @@ module scenes {
 
         private bgMap: objects.Bgmap;
         private buildLabel:objects.Label;
+        private buildLabelOutline:objects.Label;
 
         private killCountLabel:objects.Label;
 
@@ -71,6 +72,8 @@ module scenes {
         private healthbarLeftWindow:createjs.Shape;
         private healthbarRightWindow:createjs.Shape;
         
+        // Audio Engine
+        private backgroundMusic: createjs.AbstractSoundInstance;
         // PUBLIC PROPETIES
 
         // CONSTRUCTORS
@@ -87,6 +90,7 @@ module scenes {
         // PUBLIC METHODS
         public Start():void
         {         
+            this.backgroundMusic = createjs.Sound.play("backgroundMusic",0,0,0,-1,0.2,0);
             //Add Background Map
             this.bgMap = new objects.Bgmap("level1BG");
             this.addChild(this.bgMap);
@@ -170,27 +174,26 @@ module scenes {
             //this.playerHealthOutline = new objects.Label("Health: " +this.player.playerHealth, "20px","Verdana", "#FFFFFF", 20, 640, false);
             
             // Bullet Label
-            this.killCountLabel = new objects.Label("Kills: " +this.collision.killCount, "20px","Verdana", "#ffffff", 850, 25, false); 
+            this.killCountLabel = new objects.Label("Kills: " +this.collision.killCount, "20px","Boycott", "#ffffff", 850, 25, false); 
 
-            this.bulletLabel = new objects.Label("Bullets: " +(this.bulletNum - this.bulletCounter), "20px","Verdana", "#ffffff", 20, 25, false); 
+            this.bulletLabel = new objects.Label("Bullets: " +(this.bulletNum - this.bulletCounter), "20px","Boycott", "#ffffff", 20, 25, false); 
             // Reload Labels
-            this.reloadBulletLabel = new objects.Label("Press CTRL to Reload", "20px","Verdana", "#ffffff", (config.Screen.WIDTH/5)*2.2, (config.Screen.HEIGHT/4)*3, false);
-
+            this.reloadBulletLabel = new objects.Label("Press CTRL to Reload", "30px","Boycott", "#FFFFFF", (config.Screen.WIDTH/5)*1.9, (config.Screen.HEIGHT/4)*3.2, false);
+            //this.reloadBulletLabelOutline = new objects.Label("Press CTRL to Reload", "45px","Boycotta", "#a", (config.Screen.WIDTH/5)*2.2, (config.Screen.HEIGHT/4)*3.2, false); 
             // Fixing Window Labels
-            this.buildLabel= new objects.Label("Press R or 0 to Fsix Window", "20px","Verdana", "#ffffff", (config.Screen.WIDTH/5)*1.8, (config.Screen.HEIGHT/4)*3, false);
-            //this.fixWindowLabelOutline = new objects.Label("Press NUM PAD ZERO to Fix Windows", "20px","Verdana", "#FFFFFF", (config.Screen.WIDTH/5)*1.8, (config.Screen.HEIGHT/4)*3, false);
+            this.buildLabel= new objects.Label("Press R or 0 to Fix Window", "30px","Boycott", "#FFFFFF", (config.Screen.WIDTH/5)*1.7, (config.Screen.HEIGHT/4)*3, false);
+            //this.buildLabelOutline = new objects.Label("Press R or 0 to Fix Window", "45px","Boycott", "#FFFFFF", (config.Screen.WIDTH/5)*2.1, (config.Screen.HEIGHT/4)*3, false);
 
 
             // Set Label outlines to True
             //this.playerHealthOutline.outline = 1;
             //this.bulletLabelOutline.outline = 1; 
-            //this.fixWindowLabelOutline.outline = 1;
+            //this.buildLabelOutline.outline = 1;
             //this.reloadBulletLabelOutline.outline = 1;
 
             // Add Labels onto Scene
             this.addChild(this.bulletLabel);
             this.addChild(this.killCountLabel);
-            this.addChild(this.bulletLabelOutline);
 
 
             //Add Mouse Listener
@@ -289,12 +292,20 @@ module scenes {
             if (this.leftWindow.buildWindow || this.rightWindow.buildWindow)
             {
                 this.addChild(this.buildLabel);
+                //this.addChild(this.buildLabelOutline);
             }
-            else (this.removeChild(this.buildLabel))
+            else
+            {
+                this.removeChild(this.buildLabel);
+                //this.removeChild(this.buildLabelOutline);
+            }
             this.updateHealthBar();
             this.updateLabels();
             this.updateHealthBarLeftWindow();
             this.updateHealthBarRightWindow();
+            if (this.player.isAlive == false){
+                this.backgroundMusic.stop();
+            }
             return this.currentScene;
         }
 
@@ -321,16 +332,19 @@ module scenes {
         }
         private bulletFire():void
         {
+            
             if (this.allowBulletFire)                   // Stops Player from Generating bullets if not reloaded
             {
-            // Sets Bullet Spawn to Player's Location
-            this.bullet[this.bulletCounter].x = this.player.bulletSpawn.x;
-            this.bullet[this.bulletCounter].y = this.player.bulletSpawn.y;
-            this.bullet[this.bulletCounter].gunFired = true;
-            this.bullet[this.bulletCounter].bulletCollided = true;
-            this.bullet[this.bulletCounter].bulletRotation = this.player.playerRotation;
-    
-            this.bulletCounter++;
+                createjs.Sound.play("gunFire",0,-0.5, 0, 0, .5, 0);
+                //createjs.Sound.play("gun_Fire", 0, 0, 0, 0, 0.25, 0);
+                // Sets Bullet Spawn to Player's Location
+                this.bullet[this.bulletCounter].x = this.player.bulletSpawn.x;
+                this.bullet[this.bulletCounter].y = this.player.bulletSpawn.y;
+                this.bullet[this.bulletCounter].gunFired = true;
+                this.bullet[this.bulletCounter].bulletCollided = true;
+                this.bullet[this.bulletCounter].bulletRotation = this.player.playerRotation;
+        
+                this.bulletCounter++;
             }
             // Resets Bullet Counter
             if(this.bulletCounter >= this.bulletNum) 
