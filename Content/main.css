@@ -14,8 +14,20 @@
     border: 1px Black solid;
   border-radius: 6px;
   display: block;
-  background: #FFFFFF
 }
+@font-face {
+  font-family: 'Gesso';
+  src: url('../Assets/fonts/GESSO___-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Boycott';
+  src: url('../Assets/fonts/BOYCOTT_-webfont.woff') format('woff');
+font-weight: normal;
+font-style: normal;
+}
+
 html, body {
   background: rgb(53, 53, 53);
 }
