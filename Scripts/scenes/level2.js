@@ -10,11 +10,10 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var scenes;
 (function (scenes) {
-    var Play = /** @class */ (function (_super) {
-        __extends(Play, _super);
-        // PUBLIC PROPETIES
+    var Level2 = /** @class */ (function (_super) {
+        __extends(Level2, _super);
         // CONSTRUCTORS
-        function Play(currentScene, gameCanvas) {
+        function Level2(currentScene, gameCanvas) {
             var _this = _super.call(this) || this;
             // Zombie Counter
             _this.zombieCount = 10;
@@ -29,57 +28,35 @@ var scenes;
             return _this;
         }
         // PUBLIC METHODS
-        Play.prototype.Start = function () {
+        Level2.prototype.Start = function () {
             var _this = this;
+            //Add Background Music   
             this.backgroundMusic = createjs.Sound.play("backgroundMusic", 0, 0, 0, -1, 0.2, 0);
             //Add Background Map
-            this.bgMap = new objects.Bgmap("level1BG");
+            this.bgMap = new objects.Bgmap("level2BG");
             this.addChild(this.bgMap);
             //Add Left Wall Top
-            this.leftWallTop = new objects.LeftWallTop();
-            this.addChild(this.leftWallTop);
+            this.level2_leftWallTop = new objects.WallLeftTop();
+            this.addChild(this.level2_leftWallTop);
             //Add Left Wall Bottom
-            this.leftWallBottom = new objects.LeftWallBottom();
-            this.addChild(this.leftWallBottom);
+            this.level2_leftWallBottom = new objects.WallLeftBottom();
+            this.addChild(this.level2_leftWallBottom);
             //Add Top Wall
-            this.topWall = new objects.WallTop();
-            this.addChild(this.topWall);
-            //Add Bottom Wall
-            this.bottomWall = new objects.WallBottom();
-            this.addChild(this.bottomWall);
-            //Add Right Bath Wall
-            this.rightWallBath = new objects.WallRightBath();
-            this.addChild(this.rightWallBath);
-            //Add Main Gate Wall Left
-            this.mainGateWallLeft = new objects.MainGateWallLeft();
-            this.addChild(this.mainGateWallLeft);
-            //Add Main Gate Wall Right
-            this.mainGateWallRight = new objects.MainGateWallRight();
-            this.addChild(this.mainGateWallRight);
-            //Add Wall Right
-            this.rightWall = new objects.RightWall();
-            this.addChild(this.rightWall);
-            //Add Inside Horizontal Wall
-            this.insideHorizontalWall = new objects.InsideHorizontalWall();
-            this.addChild(this.insideHorizontalWall);
-            //Add Inside Vertical Wall
-            this.insideVerticalWall = new objects.InsideVerticalWall();
-            this.addChild(this.insideVerticalWall);
+            this.level2_bottomWallLeft = new objects.WallBottomLeft();
+            this.addChild(this.level2_bottomWallLeft);
+            //Add Right Wall
+            this.level2_rightWall = new objects.WallRight();
+            this.addChild(this.level2_rightWall);
             //Add Left Window
-            this.leftWindow = new objects.WindowLeft();
-            this.addChild(this.leftWindow);
-            // Set Left Window's Health Label
-            //this.leftWindowHealth = new objects.Label(""+this.leftWindow.windowLeftHealth+"/100", "12px","Verdana", "#FFFFFF", this.leftWindow.x-25, this.leftWindow.y-6, false);
-            //this.addChild (this.leftWindowHealth);
-            //Add Right Window
-            this.rightWindow = new objects.WindowRight();
-            this.addChild(this.rightWindow);
-            // Set Right Window's Health Label
-            //this.rightWindowHealth = new objects.Label(""+this.rightWindow.windowRightHealth+"/100", "12px","Verdana", "#FFFFFF", this.rightWindow.x-25, this.rightWindow.y-6, false);
-            //this.addChild (this.rightWindowHealth);
+            this.level2_windowLeft = new objects.WindowLeft_Level2();
+            this.addChild(this.level2_windowLeft);
+            //Add Left Window
+            this.level2_windowRight = new objects.WindowRight_Level2();
+            this.addChild(this.level2_windowRight);
             //Add Player
             this.player = new objects.Player();
             this.addChild(this.player);
+            this.player.currentScene = "level2";
             // Add Zombies
             this.zombie = new Array();
             this.zombieSpawn();
@@ -90,26 +67,19 @@ var scenes;
             this.collision = new managers.Collision();
             // Keyboard Input
             this.keyboardInput = new managers.keyBoardInput();
-            // Player's Health Label
-            //this.playerHealth = new objects.Label("Health: " +this.player.playerHealth, "20px","Verdana", "#000000", 20, 640, false);    
-            //this.playerHealthOutline = new objects.Label("Health: " +this.player.playerHealth, "20px","Verdana", "#FFFFFF", 20, 640, false);
             // Bullet Label
             this.killCountLabel = new objects.Label("Kills: " + this.collision.killCount, "20px", "Boycott", "#ffffff", 850, 25, false);
             this.bulletLabel = new objects.Label("Bullets: " + (this.bulletNum - this.bulletCounter), "20px", "Boycott", "#ffffff", 20, 25, false);
             // Reload Labels
             this.reloadBulletLabel = new objects.Label("Press CTRL to Reload", "30px", "Boycott", "#FFFFFF", (config.Screen.WIDTH / 5) * 1.9, (config.Screen.HEIGHT / 4) * 3.2, false);
-            //this.reloadBulletLabelOutline = new objects.Label("Press CTRL to Reload", "45px","Boycotta", "#a", (config.Screen.WIDTH/5)*2.2, (config.Screen.HEIGHT/4)*3.2, false); 
+            // Instruction Labels
+            this.instructionLbel = new objects.Label("Kill 20 zombies to finish the game", "30px", "Boycott", "#FFFFFF", (config.Screen.WIDTH / 5) * 1.3, (config.Screen.HEIGHT / 4) * 3.2, false);
             // Fixing Window Labels
             this.buildLabel = new objects.Label("Press R or 0 to Fix Window", "30px", "Boycott", "#FFFFFF", (config.Screen.WIDTH / 5) * 1.7, (config.Screen.HEIGHT / 4) * 3, false);
-            //this.buildLabelOutline = new objects.Label("Press R or 0 to Fix Window", "45px","Boycott", "#FFFFFF", (config.Screen.WIDTH/5)*2.1, (config.Screen.HEIGHT/4)*3, false);
-            // Set Label outlines to True
-            //this.playerHealthOutline.outline = 1;
-            //this.bulletLabelOutline.outline = 1; 
-            //this.buildLabelOutline.outline = 1;
-            //this.reloadBulletLabelOutline.outline = 1;
             // Add Labels onto Scene
             this.addChild(this.bulletLabel);
             this.addChild(this.killCountLabel);
+            this.addChild(this.instructionLbel);
             //Add Mouse Listener
             this.mouse = new managers.Mouse(this.player, this.gameCanvas);
             this.mouse.AddClickListener(function (event) {
@@ -124,41 +94,29 @@ var scenes;
             this.healthbarRightWindow = new createjs.Shape();
             this.addChild(this.healthbarRightWindow);
         };
-        Play.prototype.Update = function () {
+        Level2.prototype.Update = function () {
             var _this = this;
             // Update Player
             this.player.Update();
             // Check collision with wall+ player
-            this.collision.checkCollisionWall(this.player, this.leftWallTop);
-            this.collision.checkCollisionWall(this.player, this.leftWallBottom);
-            this.collision.checkCollisionWall(this.player, this.topWall);
-            this.collision.checkCollisionWall(this.player, this.bottomWall);
-            this.collision.checkCollisionWall(this.player, this.rightWallBath);
-            this.collision.checkCollisionWall(this.player, this.mainGateWallLeft);
-            this.collision.checkCollisionWall(this.player, this.mainGateWallRight);
-            this.collision.checkCollisionWall(this.player, this.rightWall);
-            this.collision.checkCollisionWall(this.player, this.insideHorizontalWall);
-            this.collision.checkCollisionWall(this.player, this.insideVerticalWall);
-            this.collision.checkCollision(this.player, this.leftWindow);
-            this.collision.checkCollision(this.player, this.rightWindow);
+            this.collision.checkCollisionWall(this.player, this.level2_leftWallTop);
+            this.collision.checkCollisionWall(this.player, this.level2_leftWallBottom);
+            this.collision.checkCollisionWall(this.player, this.level2_bottomWallLeft);
+            this.collision.checkCollisionWall(this.player, this.level2_rightWall);
+            this.collision.checkCollision(this.player, this.level2_windowLeft);
+            this.collision.checkCollision(this.player, this.level2_windowRight);
             // Update Zombie
             this.zombie.forEach(function (zombies) {
                 zombies.Update();
                 // Checks collision with the player and each zombie         
                 _this.collision.checkCollision(_this.player, zombies);
                 // Check collision with wall+ zombie
-                _this.collision.checkCollisionWall(zombies, _this.leftWallTop);
-                _this.collision.checkCollisionWall(zombies, _this.leftWallBottom);
-                _this.collision.checkCollisionWall(zombies, _this.topWall);
-                _this.collision.checkCollisionWall(zombies, _this.bottomWall);
-                _this.collision.checkCollisionWall(zombies, _this.rightWallBath);
-                _this.collision.checkCollisionWall(zombies, _this.mainGateWallLeft);
-                _this.collision.checkCollisionWall(zombies, _this.mainGateWallRight);
-                _this.collision.checkCollisionWall(zombies, _this.rightWall);
-                _this.collision.checkCollisionWall(zombies, _this.insideHorizontalWall);
-                _this.collision.checkCollisionWall(zombies, _this.insideVerticalWall);
-                _this.collision.checkCollision(zombies, _this.leftWindow);
-                _this.collision.checkCollision(zombies, _this.rightWindow);
+                _this.collision.checkCollisionWall(zombies, _this.level2_leftWallTop);
+                _this.collision.checkCollisionWall(zombies, _this.level2_leftWallBottom);
+                _this.collision.checkCollisionWall(zombies, _this.level2_bottomWallLeft);
+                _this.collision.checkCollisionWall(zombies, _this.level2_rightWall);
+                _this.collision.checkCollision(zombies, _this.level2_windowLeft);
+                _this.collision.checkCollision(zombies, _this.level2_windowRight);
             });
             // Checks collisions between each zombie and each bullet
             this.zombie.forEach(function (zombie) {
@@ -171,8 +129,10 @@ var scenes;
                 //Update Bullet
                 bullet.Update();
             });
-            // Update Labels           
-            //this.updateLabels();
+            //Remove instruction label
+            setTimeout(function () {
+                _this.removeChild(_this.instructionLbel);
+            }, 5000);
             // Change Scene Condition
             if (this.player.isAlive == false) {
                 this.backgroundMusic.stop();
@@ -185,37 +145,40 @@ var scenes;
                 // Reload Method
                 this.reloadBullet();
             }
-            if (this.leftWindow.buildWindow || this.rightWindow.buildWindow) {
+            if (this.level2_windowLeft.buildWindow || this.level2_windowRight.buildWindow) {
                 this.addChild(this.buildLabel);
-                //this.addChild(this.buildLabelOutline);
             }
             else {
                 this.removeChild(this.buildLabel);
-                //this.removeChild(this.buildLabelOutline);
             }
             this.updateHealthBar();
             this.updateLabels();
             this.updateHealthBarLeftWindow();
             this.updateHealthBarRightWindow();
+            if (this.collision.killCount == 20) {
+                this.backgroundMusic.stop();
+                this.currentScene = config.Scene.END;
+                this.removeAllChildren();
+            }
             return this.currentScene;
         };
         // PRIVATE METHODS
         // Spawn Zombies onto the Scene
-        Play.prototype.zombieSpawn = function () {
+        Level2.prototype.zombieSpawn = function () {
             var count;
             for (count = 0; count < this.zombieCount; count++) {
-                this.zombie[count] = new objects.Zombie(this.player, this.leftWindow, this.rightWindow);
+                this.zombie[count] = new objects.Zombie(this.player, this.level1_leftWindow, this.level1_rightWindow, this.level2_windowLeft, this.level2_windowRight);
                 this.addChild(this.zombie[count]);
             }
         };
         // Spawn Bullets onto the Scene
-        Play.prototype.bulletSpawn = function () {
+        Level2.prototype.bulletSpawn = function () {
             for (var count = 0; count <= this.bulletNum; count++) {
                 this.bullet[count] = new objects.Bullet();
                 this.addChild(this.bullet[count]);
             }
         };
-        Play.prototype.bulletFire = function () {
+        Level2.prototype.bulletFire = function () {
             if (this.allowBulletFire) {
                 createjs.Sound.play("gunFire", 0, -0.5, 0, 0, .5, 0);
                 //createjs.Sound.play("gun_Fire", 0, 0, 0, 0, 0.25, 0);
@@ -235,7 +198,7 @@ var scenes;
                 //console.log ("bulletCounter set to: "+this.bulletCounter);            // Debugger
             }
         };
-        Play.prototype.reloadBullet = function () {
+        Level2.prototype.reloadBullet = function () {
             var getKey = this.keyboardInput.getkeyInput(); // Get Keyboard Input from Player
             //console.log("Display Key: "+getKey);                  // Debugger
             if (getKey != null && getKey == config.Key.CTRL) {
@@ -247,7 +210,7 @@ var scenes;
             }
         };
         // Resets the Bullet Counter to Zero
-        Play.prototype.resetBulletCounter = function () {
+        Level2.prototype.resetBulletCounter = function () {
             this.bulletCounter = 0;
             //console.log ("bulletCounter has been reset to: "+this.bulletCounter)        // debugger - Checking to see if bulletCounter was reset
             // Re-Enable the Player to Shoot again
@@ -255,21 +218,12 @@ var scenes;
             //console.log ("allowBulletFire is re-Enabled");                              // debugger - checking to see if allowBulletFire was re-enabled
         };
         // Update Current Labels on Screen
-        Play.prototype.updateLabels = function () {
-            // this.bulletLabel.text = "Bullets: "+ (this.bulletNum - this.bulletCounter)+"/20";
-            //this.bulletLabelOutline.text = "Bullets: "+ (this.bulletNum - this.bulletCounter)+"/20";        // Add Outline
-            //this.playerHealth.text = "Health: "+ this.player.playerHealth;
-            //this.playerHealthOutline.text = "Health: "+ this.player.playerHealth;
+        Level2.prototype.updateLabels = function () {
             this.bulletLabel.text = "Bullets: " + (this.bulletNum - this.bulletCounter) + "/20";
             this.killCountLabel.text = "Kills:  " + this.collision.killCount;
-            //this.bulletLabelOutline.text = "Bullets: "+ (this.bulletNum - this.bulletCounter)+"/20";
-            //this.leftWindowHealth.text = "" +(this.leftWindow.windowLeftHealth) + "/100";
-            //this.rightWindowHealth.text = "" +(this.rightWindow.windowRightHealth)+"/100";
-            //this.leftWindowHealth.text = "" +(this.leftWindow.windowLeftHealth) + "/1000";
-            //this.rightWindowHealth.text = "" +(this.rightWindow.windowRightHealth)+"/1000";
         };
         // Updates the Health Bar
-        Play.prototype.updateHealthBar = function () {
+        Level2.prototype.updateHealthBar = function () {
             if (this.player.playerHealth >= 75) {
                 this.healthbar.graphics.clear().beginFill("#06d600").drawRect(0, 0, (this.player.playerHealth) * 10, 10);
             }
@@ -282,33 +236,33 @@ var scenes;
             this.addChild(this.healthbar);
         };
         // Updates left window health bar
-        Play.prototype.updateHealthBarLeftWindow = function () {
-            if (this.leftWindow.windowLeftHealth >= 650) {
-                this.healthbarLeftWindow.graphics.clear().beginFill("#06d600").drawRect(this.leftWindow.x - 22, this.leftWindow.y - 55, (this.leftWindow.windowLeftHealth / 200) * 10, 5);
+        Level2.prototype.updateHealthBarLeftWindow = function () {
+            if (this.level2_windowLeft.windowLeftHealth >= 650) {
+                this.healthbarLeftWindow.graphics.clear().beginFill("#06d600").drawRect(this.level2_windowLeft.x - 22, this.level2_windowLeft.y - 55, (this.level2_windowLeft.windowLeftHealth / 200) * 10, 5);
             }
-            else if (this.leftWindow.windowLeftHealth >= 450) {
-                this.healthbarLeftWindow.graphics.clear().beginFill("#ea7100").drawRect(this.leftWindow.x - 22, this.leftWindow.y - 55, (this.leftWindow.windowLeftHealth / 200) * 10, 5);
+            else if (this.level2_windowLeft.windowLeftHealth >= 450) {
+                this.healthbarLeftWindow.graphics.clear().beginFill("#ea7100").drawRect(this.level2_windowLeft.x - 22, this.level2_windowLeft.y - 55, (this.level2_windowLeft.windowLeftHealth / 200) * 10, 5);
             }
-            else if (this.leftWindow.windowLeftHealth <= 450) {
-                this.healthbarLeftWindow.graphics.clear().beginFill("#ea0000").drawRect(this.leftWindow.x - 22, this.leftWindow.y - 55, (this.leftWindow.windowLeftHealth / 200) * 10, 5);
+            else if (this.level2_windowLeft.windowLeftHealth <= 450) {
+                this.healthbarLeftWindow.graphics.clear().beginFill("#ea0000").drawRect(this.level2_windowLeft.x - 22, this.level2_windowLeft.y - 55, (this.level2_windowLeft.windowLeftHealth / 200) * 10, 5);
             }
             this.addChild(this.healthbarLeftWindow);
         };
         // Updates left window health bar
-        Play.prototype.updateHealthBarRightWindow = function () {
-            if (this.rightWindow.windowRightHealth >= 650) {
-                this.healthbarRightWindow.graphics.clear().beginFill("#06d600").drawRect(this.rightWindow.x - 22, this.rightWindow.y - 10, (this.rightWindow.windowRightHealth / 200) * 10, 5);
+        Level2.prototype.updateHealthBarRightWindow = function () {
+            if (this.level2_windowRight.windowRightHealth >= 650) {
+                this.healthbarRightWindow.graphics.clear().beginFill("#06d600").drawRect(this.level2_windowRight.x - 22, this.level2_windowRight.y - 10, (this.level2_windowRight.windowRightHealth / 200) * 10, 5);
             }
-            else if (this.rightWindow.windowRightHealth >= 450) {
-                this.healthbarRightWindow.graphics.clear().beginFill("#ea7100").drawRect(this.rightWindow.x - 22, this.rightWindow.y - 10, (this.rightWindow.windowRightHealth / 200) * 10, 5);
+            else if (this.level2_windowRight.windowRightHealth >= 450) {
+                this.healthbarRightWindow.graphics.clear().beginFill("#ea7100").drawRect(this.level2_windowRight.x - 22, this.level2_windowRight.y - 10, (this.level2_windowRight.windowRightHealth / 200) * 10, 5);
             }
-            else if (this.rightWindow.windowRightHealth <= 450) {
-                this.healthbarRightWindow.graphics.clear().beginFill("#ea0000").drawRect(this.rightWindow.x - 22, this.rightWindow.y - 10, (this.rightWindow.windowRightHealth / 200) * 10, 5);
+            else if (this.level2_windowRight.windowRightHealth <= 450) {
+                this.healthbarRightWindow.graphics.clear().beginFill("#ea0000").drawRect(this.level2_windowRight.x - 22, this.level2_windowRight.y - 10, (this.level2_windowRight.windowRightHealth / 200) * 10, 5);
             }
             this.addChild(this.healthbarRightWindow);
         };
-        return Play;
+        return Level2;
     }(objects.Scene));
-    scenes.Play = Play;
+    scenes.Level2 = Level2;
 })(scenes || (scenes = {}));
-//# sourceMappingURL=play.js.map
+//# sourceMappingURL=level2.js.map
